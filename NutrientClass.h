@@ -10,6 +10,7 @@ struct Food
     string measure;
     int grams;
     int protein;
+    int calories;
     int fat;
     int sat_fat;
     double fibre;
@@ -30,11 +31,12 @@ public:
         size = 0;
     }
 
-    Food* CreateNewNode(string food, string measure, int grams, int protein, int fat, int sat_fat, double fibre, int carbs, string category){
+    Food* CreateNewNode(string food, string measure, int grams,int calories, int protein, int fat, int sat_fat, double fibre, int carbs, string category){
         Food* newnode = new Food;
         newnode->food = food;
         newnode->measure = measure;
         newnode->grams = grams;
+        newnode->calories = calories;
         newnode->protein = protein;
         newnode->fat = fat;
         newnode->sat_fat = sat_fat;
@@ -64,13 +66,13 @@ public:
         cout << "Total rows: " << size;
     }
 
-    void InserttoFront(string food, string measure, int grams, int protein, int fat, int sat_fat, double fibre, int carbs, string category){
-        Food* newnode = CreateNewNode(food, measure, grams, protein, fat, sat_fat, fibre, carbs, category);
+    void InserttoFront(string food, string measure, int grams,int calories, int protein, int fat, int sat_fat, double fibre, int carbs, string category){
+        Food* newnode = CreateNewNode(food, measure, grams, calories, protein, fat, sat_fat, fibre, carbs, category);
 
         if (head == nullptr)
         {
             head = newnode;
-            size++;
+            size++; 
             return;
         }
         else
@@ -80,7 +82,31 @@ public:
             size++;
             return;
         }
+    }
+
+    void InserttoEnd(string food, string measure, int grams,int calories, int protein, int fat, int sat_fat, double fibre, int carbs, string category){
+        Food* newnode = CreateNewNode(food, measure, grams, calories, protein, fat, sat_fat, fibre, carbs, category);
+
+        if (head == nullptr)
+        {
+            head = newnode;
+            size ++;
+            return;
+        }
+        else
+        {
+            Food* current = head;
+            while (current->nextaddrress != nullptr)
+            {
+                current = current->nextaddrress;
+            }
+            current->nextaddrress = newnode;
+            size++;
+            return;
+            
+        }
         
+
     }
 };
 
