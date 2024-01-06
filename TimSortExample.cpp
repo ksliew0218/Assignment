@@ -13,8 +13,30 @@ string cleanField(const string& field) {
     for (char c : field) {
         if (c != ',' && c != '"') result += c;
     }
-    return result;
+        return result;
 }
+
+string getNextField(stringstream& ss) {
+    string field, part;
+    if (!getline(ss, part, ',')) return "";
+
+    if (part.size() > 0 && part[0] == '"') {
+        // Combine fields until the closing quote is found
+        do {
+            field += part;
+            if (part.size() > 0 && part.back() == '"') {
+                break;
+            }
+            field += ",";
+        } while (getline(ss, part, ','));
+    } else {
+        field = part;
+    }
+
+    return cleanField(field);
+}
+
+
 
 int main() {
     NutrientClass nutrientClass;
@@ -30,28 +52,19 @@ int main() {
 
     while (getline(nutrientCSVFile, line)) {
         stringstream ss(line);
-        string field;
-        string food, measure, category;
-        string grams, calories, protein, fat, sat_fat, fibre, carbs;
-
-        // Process each field in the line
-        for (int fieldCount = 0; getline(ss, field, ','); ++fieldCount) {
-            switch (fieldCount) {
-                case 0: food = field; break;
-                case 1: measure = field; break;
-                case 2: grams = cleanField(field); break;
-                case 3: calories = cleanField(field); break;
-                case 4: protein = cleanField(field); break;
-                case 5: fat = cleanField(field); break;
-                case 6: sat_fat = cleanField(field); break;
-                case 7: fibre = cleanField(field); break;
-                case 8: carbs = cleanField(field); break;
-                case 9: category = field; break;
-            }
-        }
+        string food = getNextField(ss);
+        string measure = getNextField(ss);
+        string grams = getNextField(ss);
+        string calories = getNextField(ss);
+        string protein = getNextField(ss);
+        string fat = getNextField(ss);
+        string sat_fat = getNextField(ss);
+        string fibre = getNextField(ss);
+        string carbs = getNextField(ss);
+        string category = getNextField(ss);
 
         // Insert into the linked list
-        nutrientClass.InserttoFront(food, measure, stoi(grams), stoi(calories), stoi(protein), stoi(fat), stoi(sat_fat), stod(fibre), stod(carbs), category);
+        nutrientClass.InserttoEnd(food, measure, stoi(grams), stoi(calories), stoi(protein), stoi(fat), stoi(sat_fat), stod(fibre), stod(carbs), category);
     }
 
     nutrientClass.DisplayLinkedList();

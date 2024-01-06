@@ -103,10 +103,9 @@ public:
             current->nextaddrress = newnode;
             size++;
             return;
-            
         }
-        
-
     }
+
+    
 };
 
